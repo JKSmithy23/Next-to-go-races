@@ -39,6 +39,7 @@ export class RaceList extends React.Component {
         if (difference < -60000) {
             this.state.summaries.shift();
             this.state.filteredSummaries.shift();
+            this.props.getRaces();
         }
 
         return timeLeft;

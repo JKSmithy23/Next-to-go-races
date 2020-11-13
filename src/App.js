@@ -8,9 +8,9 @@ function App() {
   const [appState, setAppState] = useState({ 
     loading: false,
     raceSummaries: [],
-   });
+  });
 
-  useEffect(() => {
+  const getRaces =  React.useCallback(() => {
     setAppState({ loading: true });
     const apiUrl = 'https://api.neds.com.au/rest/v1/racing/?method=nextraces&count=10';
     axios.get(apiUrl).then((races) => {
@@ -20,7 +20,11 @@ function App() {
         raceSummaries: Object.values(raceSummaries),
       });
     });
-  }, [setAppState]);
+  }, []);
+
+  useEffect(() => {
+    getRaces();
+  }, [getRaces]);
 
   return (
     <div className="App">
@@ -28,7 +32,7 @@ function App() {
       {appState.loading ? (
         <div>Loading races...</div>
       ) : (
-        <RaceList summaries={appState.raceSummaries} />
+        <RaceList getRaces={getRaces} summaries={appState.raceSummaries} />
       )}
     </div>
   );
